@@ -23,13 +23,19 @@
 			</div>
 		</div>
 		</div>
+
+		<div class ="center">
+			<label for="img">Select waste image:</label></br>
+			<input style="text-align:center !important" type="file" id="img" name="img" accept="image/*"></br>
+			<input type="submit">
+			<button onclick="startVideo()">Take a Picture</button>
+			<button onclick="takePic()">Snap</button>
+			<button onclick="submitPic()"></button>
+		</div>
         <div class="center">
 		<div id="img" class="imgbox">
-		<form>
-           <label for="img">Select waste image:</label></br>
-           <input style="text-align:center !important" type="file" id="img" name="img" accept="image/*"></br>
-           <input type="submit">
-		</form>
+			<video autoplay="true" id="videoElement"></video>
+			<canvas id = "canvas" style="overflow: auto;"></canvas>
 		</div>
 		
 		<div id="txt" class="searchbar">
@@ -61,5 +67,37 @@ else {
 	txt.style.display = "flex";
 }
 
-}</script>
+}
+
+function startVideo() {
+                let video = document.querySelector("#videoElement");
+				let canvas = document.getElementById("canvas")
+                video.removeAttribute("hidden")
+                canvas.setAttribute("hidden","hideen")
+
+                if (navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ video : true})
+                        .then(function (stream) {
+                            video.srcObject = stream;
+                        })
+                        .catch (function (error) {
+                            console.log("something went wrong")
+                        })
+                } else {
+                    console.log("unsupported.")
+                }
+            }
+	function takePic() {
+                var canvas = document.getElementById("canvas");
+                var video = document.querySelector("video");
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext("2d").drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+                
+				canvas.removeAttribute("hidden")
+                video.setAttribute("hidden", "hidden");
+            }
+
+</script>
+
 </html>
