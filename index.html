@@ -15,26 +15,51 @@
 			<p style="font-size:30px">WASTE EYE</p>
 			</div>
 		<div class="buttons">
-			<div class="button">
+			<div class="button" onclick="tab('img')">
 			IMAGE
 			</div>
-			<div class="button">
+			<div class="button" onclick="tab('txt')">
 			TEXT
 			</div>
 		</div>
 		</div>
         <div class="center">
-		<div class="imgbox">
+		<div id="img" class="imgbox">
 		<form>
-           <label for="img">Select image:</label></br>
+           <label for="img">Select waste image:</label></br>
            <input style="text-align:center !important" type="file" id="img" name="img" accept="image/*"></br>
            <input type="submit">
 		</form>
 		</div>
-  </form>
+		
+		<div id="txt" class="searchbar">
+		<form style="width:100%">
+			<label for="img">Input waste name:</label></br>
+           <input style="text-align:center !important" type="text"></br>
+           <input type="submit">
+		</form>
+		</div>
   
   <p style="font-size:20px">Object Name</p>
   <div class="imgbox">Test</div>
   </div>
     </body>
+	
+	<script>
+	function tab(tabname) {
+
+var img, txt
+img = document.getElementById("img")
+txt = document.getElementById("txt")
+
+if (tabname == "img") {
+	img.style.display = "flex";
+	txt.style.display = "none";
+}
+else {
+	img.style.display = "none";
+	txt.style.display = "flex";
+}
+
+}</script>
 </html>

@@ -22,9 +22,6 @@ background-attachment: fixed;
 }
 
 
-.advicebox {
-	Border: 2px solid black;}
-
 .imgbox {
 display:flex;
 justify-content: center;
@@ -74,4 +71,11 @@ height:100%;
 background-color:lightgreen;
 align-items:center;
 text-align:center;
+}
+
+.searchbar {
+	display:none;
+	width:100%;
+	flex-direction:column;
+	align-items:center;
 }
