@@ -12,20 +12,26 @@ const openai = new OpenAI({
 
 const app = express();
 app.use(express.static(__dirname));
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 app.get("/", (req, res) => {
     res.sendFile(join(__dirname, "index.html"));
 });
 
-app.post("/analyze", (req, res) => {
-    
+app.post("/analyze", async (req, res) => {
+    const content = req.body.image;
+
+    var detection = await detectObjects(content);
+
+    console.log(detection);
+
+    res.json(detection);
 });
 
 app.listen(3000);
 
-async function detectObjects(image) { // image: /path/to/localImage.png
-    const content = Buffer.from(readFileSync(image)).toString("base64");
-
+async function detectObjects(content) { // image: /path/to/localImage.png
     const res = await post("https://vision.googleapis.com/v1/images:annotate?key=" + process.env.GOOGLE, { headers: { 
         "Content-Type": "application/json; charset=utf-8",
     } }).send({
@@ -84,6 +90,8 @@ async function detectObjects(image) { // image: /path/to/localImage.png
         if (res.body.responses[0].textAnnotations && res.body.responses[0].textAnnotations.length > 0) {
             var normalizedText = res.body.responses[0].textAnnotations[0].description.replace(/\n/g, " ");
             
+            console.log(normalizedText);
+
             const product = await openai.chat.completions.create({
                 messages: [{ role: "user", content: `What is the product given by "${normalizedText}"? Answer in up to 3 words, and do not answer in a full sentence.` }],
                 model: "gpt-3.5-turbo",
