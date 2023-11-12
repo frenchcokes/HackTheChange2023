@@ -119,6 +119,7 @@ async function detectObjects(content) { // image: /path/to/localImage.png
             textAnnotations,
         }
     } else {
+        console.log("Return failed.")
         return {
             objectAnnotations: [],
             textAnnotations: [],
