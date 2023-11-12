@@ -1,114 +1,152 @@
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-	   <meta charset="UTF-8">
-        <title>Waste Eye</title>
+<html lang="en">
 
-        <link rel="stylesheet" href="index.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Waste Eye</title>
 
 
-    </head>
-    <body>
-		<div class="navbar">
-			<div class="brand">
-			<img src="./img/logo.png" style="height:50%">
-			<p style="font-size:30px">WASTE EYE</p>
-			</div>
-			<div class="poweredby">
-			<span>Powered by</span></br>
-			<img src="img/vision.png" class="icon"> <img src="img/gpt.png" class="icon">
-			</div>
+    <link rel="stylesheet" href="index.css">
+
+
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=X6HTUIilr3dh_YoWmGdKo618ZX5YDuuMRsWhx7_ltqJMEEb6OOX_KJxuKgl7AysaX6pVei6jOvOtPe4rnKLSJtXP78xhdvFB0ItlcCEv9xrdnqNPq6xna3wa-tbOFF06KmAxZ0ux6RxXzwucNQjjdzVKjsmc0lfhNAwLF_QgepyVtkdYHlZNFBYIzt4DDA16tr7QYPNmR7yyLoQ3C7WROjgKcJR6QIrD-jT1fOWWYlK5LG0hXrOio8NVClHL-MKfZKSUPbbN2XP2OKM7n1pAew" charset="UTF-8"></script></head>
+
+<body>
+	<!-- TOP BAR -->
+    <div class="navbar">
+        <div class="brand">
+            <img src="./img/logo.png" style="height:50%">
+            <p style="font-size:30px">WASTE EYE</p>
+        </div>
+		<div class="poweredby">
+			<span>Powered by</span>
+			<img src="img/vision.png" class="icon"><img src="img/gpt.png" class="icon">
 		</div>
+    </div>
 
-		<div class="sidenav">
-			<form>
-			<label for="img">Sort waste by name</label></br>
-           <input type="text">
-           <input type="submit">
-			</form>
-		
+	<div class="sidenav">
+		<label><b>About</b></label>
+		<p>Don't know where to put your trash? <br>
+			Take a picture and Waste Eye will tell you!</p>
+
 		<hr>
+		<br>
+
+		<label for="img" style="text-align: center;"><b>Sort waste by name</b></label>
+		<br>
+		<form>
+            <input type="text">
+            <input type="submit">
+		</form>
+
+		<br>
+		<hr>
+		<br>
+
+		<label for="img" style="text-align: center;"><b>Upload image from device</b><label>	
+		<br>
+		<br>
+		<input type="file" id="imgForm" name="img" accept="image/*">
+		<input type="submit" onclick="submitFormPic()">
 		
-
-			<label for="img">Upload image from device<label></br>
-			<input type="file" id="img" name="img" accept="image/*">
-			<input type="submit">
-			
-			<hr>
-			
-			<button onclick="startVideo()">Take a Picture</button>
-			<button onclick="takePic()">Snap</button>
-			<button onclick="submitPic()"></button>
-		</div>
-
+		<br>
+		<br>
+		<hr>
+		<br>	
 		
-		
-		<div class ="center">
-		
-		<div id="txt" class="searchbar">
+		<label><b>Use your camera<b></label>
+		<br>
+		<br>
 
-		</div>
-	
+		<button onclick="startVideo()">Take a Picture</button>
+		<button onclick="takePic()">Snap</button>
+		<button onclick="submitPic()">Submit</button>
 
+		<br>
+		<br>
+		<hr>
+	</div>
 
-		</div>
-        <div class="center">
+	<div class="center">
+		<p class="responseText">RESPONSE TEXT</p>
+		<video class = "videoInsert" autoplay="true" id="videoElement"></video>
+		<canvas id = "canvas" style="overflow: auto;"></canvas>
+	</div>
 
+</body>
 
-  <p style="font-size:20px,display:none" id="objtext">Object Name</p>
-  <div id="imgbox">Test</div>
-			
+<script>
+    function tab(tabname) {
 
-				<video autoplay="true" id="videoElement"></video>
-				<canvas id = "canvas" style="overflow: auto;"></canvas>
+        var img, txt
+        img = document.getElementById("img")
+        txt = document.getElementById("txt")
 
+        if (tabname == "img") {
+            img.style.display = "flex";
+            txt.style.display = "none";
+        }
+        else {
+            img.style.display = "none";
+            txt.style.display = "flex";
+        }
 
-		
+    }
 
-  
+    function startVideo() {
+        let video = document.querySelector("#videoElement");
+        let canvas = document.getElementById("canvas")
+        video.removeAttribute("hidden")
+        canvas.setAttribute("hidden", "hidden")
 
-  </div>
-    </body>
-	
-	<script>
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    video.srcObject = stream;
+                })
+                .catch(function (error) {
+                    console.log("something went wrong")
+                })
+        } else {
+            console.log("unsupported.")
+        }
+    }
 
-function startVideo() {
-                let video = document.querySelector("#videoElement");
-				let canvas = document.getElementById("canvas")
-                video.removeAttribute("hidden")
-                canvas.setAttribute("hidden","hideen")
+    function takePic() {
+        var canvas = document.getElementById("canvas");
+        var video = document.querySelector("video");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
 
-                if (navigator.mediaDevices.getUserMedia) {
-                    navigator.mediaDevices.getUserMedia({ video : true})
-                        .then(function (stream) {
-                            video.srcObject = stream;
-                        })
-                        .catch (function (error) {
-                            console.log("something went wrong")
-                        })
-                } else {
-                    console.log("unsupported.")
-                }
-            }
-	function takePic() {
-                var canvas = document.getElementById("canvas");
-                var video = document.querySelector("video");
-				
-				canvas.setAttribute("width",video.videoWidth);
-				canvas.setAttribute("height",video.videoHeight);
-				
-				canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-				
-				canvas.getContext("2d").drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-				
-				document.getElementById("imgbox").setAttribute("display","flex");
-				document.getElementById("objtext").setAttribute("display","flex");
-				
-				canvas.removeAttribute("hidden");
-                video.setAttribute("hidden", "hidden");
-				
-            }
+        canvas.removeAttribute("hidden")
+        video.setAttribute("hidden", "hidden");
+    }
+
+    async function submitPic() {
+        const canvas = document.getElementById('canvas');
+        const base64 = canvas.toDataURL("image/png").replace(/^data:image\/?[A-z]*;base64,/, "");
+
+        console.log(base64);
+
+        const response = await fetch("http://localhost:3000/analyze", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                image: base64
+            })
+        });
+
+		const data = await response.json();
+
+        console.log(data);
+    }
+
+    async function submitFormPic() {
+        const img = document.getElementById
+    }
 
 </script>
 
