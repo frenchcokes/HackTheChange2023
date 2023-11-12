@@ -153,33 +153,42 @@
 
         const data = await requestBackendImage(canvas);
 
-        console.log(data);
+        generateOutputs(data);
     }
 
     async function submitFormPic() {
         const input = document.getElementById("imgForm");
         const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
         var video = document.querySelector("video");
 
         if (input.files && input.files[0]) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
             var reader = new FileReader();
+            reader.readAsDataURL(input.files[0]);
+
             reader.onload = function (e) {
                 var pic = new Image();
                 pic.src = e.target.result;
-                pic.onload = function () {
+
+                pic.onload = async function () {
+                    console.log("here");
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
                     canvas.width = pic.width;
                     canvas.height = pic.height;
-                    canvas.getContext("2d").drawImage(pic, 0, 0, canvas.width, canvas.height)
+                    ctx.drawImage(pic, 0, 0, canvas.width, canvas.height)
+
+                    canvas.removeAttribute("hidden");
+                    video.setAttribute("hidden", "hidden");
+
+                    const data = await requestBackendImage(canvas);
+
+                    generateOutputs(data);
                 };
 
             };
-            canvas.removeAttribute("hidden");
-            video.setAttribute("hidden", "hidden");
-        }
-
-        const data = await requestBackendImage(canvas);
-
-        console.log(data);
+        }            
     }
 
     async function requestBackendImage(canvas) {
@@ -198,10 +207,6 @@
         });
 
         const data = await response.json()
-        .then(data => {
-            generateOutputs(data);
-        })
-
         return data;
     }
 
