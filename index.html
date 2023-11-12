@@ -1,144 +1,123 @@
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-	   <meta charset="UTF-8">
-        <title>Waste Eye</title>
+<html lang="en">
 
-        <link rel="stylesheet" href="index.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Waste Eye</title>
+
+    <link rel="stylesheet" href="index.css">
 
 
-    </head>
-    <body>
-		<div class="navbar">
-			<div class="brand">
-			<img src="./img/logo.png" style="height:50%">
-			<p style="font-size:30px">WASTE EYE</p>
-			</div>
-		<div class="buttons">
-			<div class="button" onclick="tab('img')">
-			IMAGE
-			</div>
-			<div class="button" onclick="tab('txt')">
-			TEXT
-			</div>
-		</div>
-		</div>
+</head>
 
-		<div class ="center">
-			<form>
-				<label for="img">Select waste image:</label></br>
-				<input style="text-align:center !important" type="file" id="img" name="img" accept="image/*"></br>
-				<input type="submit">
-			</form>
+<body>
+    <div class="navbar">
+        <div class="brand">
+            <img src="./img/logo.png" style="height:50%">
+            <p style="font-size:30px">WASTE EYE</p>
+        </div>
+        <div class="buttons">
+            <div class="button" onclick="tab('img')">
+                IMAGE
+            </div>
+            <div class="button" onclick="tab('txt')">
+                TEXT
+            </div>
+        </div>
+    </div>
 
-			<button onclick="startVideo()">Take a Picture</button>
-			<button onclick="takePic()">Snap</button>
-			<button onclick="submitPic()"></button>
-		</div>
-        <div class="center">
-			<video autoplay="true" id="videoElement"></video>
-			<canvas id = "canvas" style="overflow: auto;"></canvas>
-		
-		<div id="txt" class="searchbar">
-		<form style="width:100%">
-			<label for="img">Input waste name:</label></br>
-           <input style="text-align:center !important" type="text"></br>
-           <input type="submit">
-		</form>
-		</div>
-  
-  <p style="font-size:20px">Object Name</p>
-    </body>
-	
-	<script>
-	function tab(tabname) {
+    <div class="center">
+        <form>
+            <label for="img">Select waste image:</label></br>
+            <input style="text-align:center !important" type="file" id="img" name="img" accept="image/*"></br>
+            <input type="submit">
+        </form>
 
-var img, txt
-img = document.getElementById("img")
-txt = document.getElementById("txt")
+        <button onclick="startVideo()">Take a Picture</button>
+        <button onclick="takePic()">Snap</button>
+        <button onclick="submitPic()">Submit</button>
+    </div>
+    <div class="center">
+        <video autoplay="true" id="videoElement"></video>
+        <canvas id="canvas" style="overflow: auto;"></canvas>
 
-if (tabname == "img") {
-	img.style.display = "flex";
-	txt.style.display = "none";
-}
-else {
-	img.style.display = "none";
-	txt.style.display = "flex";
-}
+        <div id="txt" class="searchbar">
+            <form style="width:100%">
+                <label for="img">Input waste name:</label></br>
+                <input style="text-align:center !important" type="text"></br>
+                <input type="submit">
+            </form>
+        </div>
 
-}
+        <p style="font-size:20px">Object Name</p>
+</body>
 
-function startVideo() {
-                let video = document.querySelector("#videoElement");
-				let canvas = document.getElementById("canvas")
-                video.removeAttribute("hidden")
-                canvas.setAttribute("hidden","hidden")
+<script>
+    function tab(tabname) {
 
-                if (navigator.mediaDevices.getUserMedia) {
-                    navigator.mediaDevices.getUserMedia({ video : true})
-                        .then(function (stream) {
-                            video.srcObject = stream;
-                        })
-                        .catch (function (error) {
-                            console.log("something went wrong")
-                        })
-                } else {
-                    console.log("unsupported.")
-                }
-            }
-	function takePic() {
-                var canvas = document.getElementById("canvas");
-                var video = document.querySelector("video");
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                canvas.getContext("2d").drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+        var img, txt
+        img = document.getElementById("img")
+        txt = document.getElementById("txt")
 
-				canvas.removeAttribute("hidden")
-                video.setAttribute("hidden", "hidden");
-            }
-	function submitPic() {
-		//TEST
-		function submitCanvas() {
-            const canvas = document.getElementById('canvas');
-            const context = canvas.getContext('2d');
+        if (tabname == "img") {
+            img.style.display = "flex";
+            txt.style.display = "none";
+        }
+        else {
+            img.style.display = "none";
+            txt.style.display = "flex";
+        }
 
-            // Convert canvas content to a Blob (image file)
-            canvas.toBlob((blob) => {
-                // Create a FormData object and append the Blob to it
-                const formData = new FormData();
-                formData.append('canvasImage', blob, 'canvasImage.png');
+    }
 
-                // Send the FormData to the server using Fetch API or another method
-                fetch('your_server_endpoint', {
-                    method: 'POST',
-                    body: formData,
+    function startVideo() {
+        let video = document.querySelector("#videoElement");
+        let canvas = document.getElementById("canvas")
+        video.removeAttribute("hidden")
+        canvas.setAttribute("hidden", "hidden")
+
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    video.srcObject = stream;
                 })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Server response:', data);
+                .catch(function (error) {
+                    console.log("something went wrong")
                 })
-                .catch(error => {
-                    console.error('Error submitting canvas:', error);
-                });
-            }, 'image/png');
-        		}
-			//TEST
+        } else {
+            console.log("unsupported.")
+        }
+    }
 
+    function takePic() {
+        var canvas = document.getElementById("canvas");
+        var video = document.querySelector("video");
+        canvas.width = video.videoWidth * 0.5;
+        canvas.height = video.videoHeight * 0.5;
+        canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
 
-		fetch("[API FETCH LINK]")
-            .then(res => {
-                return res.json();
+        canvas.removeAttribute("hidden")
+        video.setAttribute("hidden", "hidden");
+    }
+
+    async function submitPic() {
+        const canvas = document.getElementById('canvas');
+        const base64 = canvas.toDataURL("image/png").replace(/^data:image\/?[A-z]*;base64,/, "");
+
+        console.log(base64);
+
+        const response = await fetch("http://localhost:3000/analyze", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                image: base64
             })
-            .then(data => {
-                data.array.forEach(elementInArray => {
-                    const markup = "<li>${elementInArray.[WHERE THE AI READING OF OUTPUT IS STORED] }</li>";
-               
-                    document.querySelector("ul").insertAdjacentHTML("beforeend", markup);
-                });
-            })
-            .catch(err => console.log(error));
+        });
 
-	}
+        console.log(response);
+    }
 
 </script>
 
