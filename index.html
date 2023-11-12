@@ -22,9 +22,10 @@
     </div>
 
 	<!-- SIDE BAR -->
-	<div class="sidenav" onclick="toggleSidebar(true)">
 	
-		<img src="./img/left-arrow.png" style="width:5vw;" onclick="toggleSidebar(false)" >
+	<img src="./img/left-arrow.png" style="width:5vw;position:fixed;top:20px;z-index:10" id="rotated" onclick="toggleSidebar(true)" >
+	
+	<div class="sidenav" onclick="toggleSidebar(false)">
 		<br>
 		<br>
 	
@@ -85,17 +86,19 @@
 var hidden = false;
 
 	function toggleSidebar(bool) {
-	if (bool == true) {
+	const rotated = document.getElementById("rotated");
+	if (bool) {
 	document.querySelector('.sidenav').classList.toggle('closed');
-	hidden = !hidden;
-	} else if (hidden == true) {
+	hidden = true;
+	} else if (hidden) {
+	rotated.style.transform = "rotate(20deg)";
 	document.querySelector('.sidenav').classList.toggle('closed');
-	hidden = !hidden;
+	hidden = false;}
 	}
 
 
 
-}
+
 
     function startVideo() {
         let video = document.querySelector("#videoElement");
