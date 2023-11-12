@@ -49,6 +49,11 @@ html * {
     height:20vh;
     }
     
+    #sideNavButton{
+        border-radius: 50%;
+        background-color: #111;
+    }
+
     .buttons {
     width:100%;
     height:10vh;
@@ -90,6 +95,11 @@ html * {
     #videoElement {
         width:inherit;
         height:inherit;
+        margin-bottom: 10vh
+    }
+    
+    #canvas {
+        margin-bottom: 10vh
     }
     
     .poweredby {
@@ -110,7 +120,7 @@ html * {
     height: 1px;
     
     }
-    
+    /* Sidebar */
     .sidenav {
         height: 100%;
         position: fixed; 
@@ -126,6 +136,13 @@ html * {
         flex-direction:column;
         align-items:center;
         justify-content: center;
+        	
+	transition: 0.5s cubic-bezier(.36,-0.01,0,.77);
+	width:400px
+}
+
+.sidenav.closed {
+  left:-350px;
     }
     
     .responseText {
