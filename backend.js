@@ -7,7 +7,7 @@ const { readFileSync } = require('fs');
 const { join } = require('path');
 
 const openai = new OpenAI({
-    apiKey: "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",
+    apiKey: OPENAI
 });
 
 const app = express();
@@ -32,7 +32,7 @@ app.post("/analyze", async (req, res) => {
 app.listen(3000);
 
 async function detectObjects(content) { // image: /path/to/localImage.png
-    const res = await post("https://vision.googleapis.com/v1/images:annotate?key=" + "AIzaSyA1Dhu9KHIol-1OO2aSGhpOAQGKIE8prg8", { headers: { 
+    const res = await post("https://vision.googleapis.com/v1/images:annotate?key=" + GOOGLE, { headers: { 
         "Content-Type": "application/json; charset=utf-8",
     } }).send({
         "requests": [
