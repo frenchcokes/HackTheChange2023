@@ -1,123 +1,114 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang = "en">
+    <head>
+	   <meta charset="UTF-8">
+        <title>Waste Eye</title>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Waste Eye</title>
-
-    <link rel="stylesheet" href="index.css">
+        <link rel="stylesheet" href="index2.css">
 
 
-</head>
+    </head>
+    <body>
+		<div class="navbar">
+			<div class="brand">
+			<img src="./img/logo.png" style="height:50%">
+			<p style="font-size:30px">WASTE EYE</p>
+			</div>
+			<div class="poweredby">
+			<span>Powered by</span></br>
+			<img src="img/vision.png" class="icon"> <img src="img/gpt.png" class="icon">
+			</div>
+		</div>
 
-<body>
-    <div class="navbar">
-        <div class="brand">
-            <img src="./img/logo.png" style="height:50%">
-            <p style="font-size:30px">WASTE EYE</p>
-        </div>
-        <div class="buttons">
-            <div class="button" onclick="tab('img')">
-                IMAGE
-            </div>
-            <div class="button" onclick="tab('txt')">
-                TEXT
-            </div>
-        </div>
-    </div>
+		<div class="sidenav">
+			<form>
+			<label for="img">Sort waste by name</label></br>
+           <input type="text">
+           <input type="submit">
+			</form>
+		
+		<hr>
+		
 
-    <div class="center">
-        <form>
-            <label for="img">Select waste image:</label></br>
-            <input style="text-align:center !important" type="file" id="img" name="img" accept="image/*"></br>
-            <input type="submit">
-        </form>
+			<label for="img">Upload image from device<label></br>
+			<input type="file" id="img" name="img" accept="image/*">
+			<input type="submit">
+			
+			<hr>
+			
+			<button onclick="startVideo()">Take a Picture</button>
+			<button onclick="takePic()">Snap</button>
+			<button onclick="submitPic()"></button>
+		</div>
 
-        <button onclick="startVideo()">Take a Picture</button>
-        <button onclick="takePic()">Snap</button>
-        <button onclick="submitPic()">Submit</button>
-    </div>
-    <div class="center">
-        <video autoplay="true" id="videoElement"></video>
-        <canvas id="canvas" style="overflow: auto;"></canvas>
+		
+		
+		<div class ="center">
+		
+		<div id="txt" class="searchbar">
 
-        <div id="txt" class="searchbar">
-            <form style="width:100%">
-                <label for="img">Input waste name:</label></br>
-                <input style="text-align:center !important" type="text"></br>
-                <input type="submit">
-            </form>
-        </div>
+		</div>
+	
 
-        <p style="font-size:20px">Object Name</p>
-</body>
 
-<script>
-    function tab(tabname) {
+		</div>
+        <div class="center">
 
-        var img, txt
-        img = document.getElementById("img")
-        txt = document.getElementById("txt")
 
-        if (tabname == "img") {
-            img.style.display = "flex";
-            txt.style.display = "none";
-        }
-        else {
-            img.style.display = "none";
-            txt.style.display = "flex";
-        }
+  <p style="font-size:20px,display:none" id="objtext">Object Name</p>
+  <div id="imgbox">Test</div>
+			
 
-    }
+				<video autoplay="true" id="videoElement"></video>
+				<canvas id = "canvas" style="overflow: auto;"></canvas>
 
-    function startVideo() {
-        let video = document.querySelector("#videoElement");
-        let canvas = document.getElementById("canvas")
-        video.removeAttribute("hidden")
-        canvas.setAttribute("hidden", "hidden")
 
-        if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function (stream) {
-                    video.srcObject = stream;
-                })
-                .catch(function (error) {
-                    console.log("something went wrong")
-                })
-        } else {
-            console.log("unsupported.")
-        }
-    }
+		
 
-    function takePic() {
-        var canvas = document.getElementById("canvas");
-        var video = document.querySelector("video");
-        canvas.width = video.videoWidth * 0.5;
-        canvas.height = video.videoHeight * 0.5;
-        canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
+  
 
-        canvas.removeAttribute("hidden")
-        video.setAttribute("hidden", "hidden");
-    }
+  </div>
+    </body>
+	
+	<script>
 
-    async function submitPic() {
-        const canvas = document.getElementById('canvas');
-        const base64 = canvas.toDataURL("image/png").replace(/^data:image\/?[A-z]*;base64,/, "");
+function startVideo() {
+                let video = document.querySelector("#videoElement");
+				let canvas = document.getElementById("canvas")
+                video.removeAttribute("hidden")
+                canvas.setAttribute("hidden","hideen")
 
-        console.log(base64);
-
-        const response = await fetch("http://localhost:3000/analyze", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                image: base64
-            })
-        });
-
-        console.log(response);
-    }
+                if (navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ video : true})
+                        .then(function (stream) {
+                            video.srcObject = stream;
+                        })
+                        .catch (function (error) {
+                            console.log("something went wrong")
+                        })
+                } else {
+                    console.log("unsupported.")
+                }
+            }
+	function takePic() {
+                var canvas = document.getElementById("canvas");
+                var video = document.querySelector("video");
+				
+				canvas.setAttribute("width",video.videoWidth);
+				canvas.setAttribute("height",video.videoHeight);
+				
+				canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+				
+				canvas.getContext("2d").drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+				
+				document.getElementById("imgbox").setAttribute("display","flex");
+				document.getElementById("objtext").setAttribute("display","flex");
+				
+				canvas.removeAttribute("hidden");
+                video.setAttribute("hidden", "hidden");
+				
+            }
 
 </script>
 
