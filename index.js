@@ -1,6 +1,9 @@
 //Output filesystem
 function generateOutputs(data){
+    //replace children.
     let outputBoxes = document.getElementById("output__boxes");
+    outputBoxes.replaceChildren();
+
     for(let i = 0; i < data.objectAnnotations.length; i++){
         //Make some new elements to fit information
         let newOutput = document.createElement("div");
@@ -14,7 +17,7 @@ function generateOutputs(data){
 
         //Put data in
         newObjName.innerText = `${data.objectAnnotations[i].name}`;
-        disposal.innerText = `${data.objectAnnotations[i].disposal} \n \n Confidence:${data.objectAnnotations[i].score}`;
+        disposal.innerText = `${data.objectAnnotations[i].disposal} \n \n Confidence: ${data.objectAnnotations[i].score}`;
 
         //Append to DOM
         newOutput.appendChild(newObjName);
